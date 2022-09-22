@@ -1,198 +1,163 @@
-from mysql.connector import Error
-import pymysql
+#
+#
+#
+# class Person:
+#     def __init__(self, name):
+#         self.name = name
+#
+#     def __str__(self):
+#         return f'Привет! Меня зовут {self.name}!'
+#
+#     def __repr__(self):
+#         return f'Person({repr(self.name)})'
+#
+#
+# p1 = Person('Алексей')
+# p2 = exec(repr(p1))
+#
+#
+# # Wife(Person)
+# # Husband(Person)
+# # Cat
+#
+# # Controller
+# #   make_move(inhabitant)
+# # WifeController(Controller)
+# #   make_move(wife)
+# # HusbandController(Controller)
+# #   make_move(husband)
+# # CatController(Controller)
+# #   make_move(cat)
+#
+# #
+#
+# # inhabitants = [Wife(), Husband(), Cat()]
+# # for person in inhabitants:
+# #     pass
+#
+# # Basics
+# # Functional Programming
+# # Object-Oriented Programming
+#
+# class controller():
+#     class wifecontroler():
+#
+#
+# from dataclasses import dataclass
+#
+#
+# @dataclass
+# class Smt:
+#     name: str
+#     age: int
+#
+#     # self == other
+#     def __eq__(self, other):
+#         pass
+#
+#     # hash(self)
+#     def __hash__(self):
+#         pass
 
 
-class my_database:
-    def __init__(self, DB_NAME, DB_HOST, DB_USER, DB_PORT, DB_PASSWORD):
-        self.db_name = DB_NAME
-        self.db_host = DB_HOST
-        self.db_port = DB_PORT
-        self.db_user = DB_USER
-        self.db_passwd = DB_PASSWORD
+class Person:
+    def __init__(self, name: str, age: int, height: int):
+        self.name = name
+        self.age = age
+        self.height = height
 
-    def get_connection(self):
-        try:
-            connection = pymysql.connect(host=self.db_host,
-                                         port=self.db_port,
-                                         user=self.db_user,
-                                         passwd=self.db_passwd)
-            print("CONNECTION TO DATABASE SUCCeS,HAVE A GOOD DAY MR.MARK!")
-            return connection
-        except Error as db_connection_error:
-            print("try again mr mark,because you have a mistakes with connection", db_connection_error)
-
-    def lets_go(self):
-        connection = self.get_connection()
-        cursor = connection.cursor()
-        create_name = """CREATE DATABASE IF NOT EXISTS {}""".format("means")
-        cursor.execute(create_name)
-        cursor.close()
-        connection.close()
-
-    def createtabb(self):
-        connection = self.get_connection()
-
-        cursor = connection.cursor()
-        try:
-            create_table_query = '''
-            CREATE TABLE IF NOT EXISTS buble (
-            id INT AUTO_INCREMENT,
-            name TEXT NOT NULL,
-            age INT ,
-            gender VARCHAR(10),
-            nationality TEXT ,   
-            mailbox TEXT,
-            CITY TEXT,                                               
-            PRIMARY KEY (id)
-            )ENGINE = InnoDB '''
-            cursor.execute(create_table_query)
-            connection.commit()
-
-        except Error as error:
-            print(error, "вы хуесос!")
-
-        finally:
-            cursor.close()
-            connection.commit()
-            connection.close()
-
-    def go_value(self):
-        connection = self.get_connection()
-        cursor = connection.cursor()
-
-        try:
-            go_value = '''INSERT INTO buble(name,age,gender,nationality,mailbox,city)
-                       VALUES("MARK",20,"MALE","ENGLAND","snipsss228@gmail.com","London"),
-                              ("gnom",20,"FEMALE","Spain","gmoom22021@gmail.com","Saint-P"),
-                              ("Oleg",31,"male","USA","makar@localhost:3306","OHIO"),
-                              ("MIRACKE",87,"MALE","Russia","ubernacht@locashost@3337.ru","Murmacks");'''
-
-            cursor.execute(go_value)
-            connection.commit()
-        except Error as db_connection_error:
-            print("Try Again Mr.mark:", db_connection_error)
-        finally:
-            cursor.close()
-            connection.close()
-
-    def go_query(self):
-        self.connection = pymysql.connect(
-            host=self.db_host,
-            port=self.db_port,
-            user=self.db_user,
-            passwd=self.db_passwd,
-            database=self.db_name)
+    def __hash__(self) -> int:
+        return hash((self.name, self.age, self.height))
 
 
-        cursor = self.connection.cursor()
-        query = """SELECT *FROM buble;"""
-        cursor.execute(query)
-        query_res = cursor.fetchall()
-        for data in query_res:
-            print(data)
-        else:
-            cursor.close()
-            self.connection.commit()
+# person1 = Person('viktor', 10, 100)
+# person2 = Person('viktor', 10, 100)
+# print(hash(person1))
+# print(hash(person2))
 
 
-    def deleter(self):
-        self.connection = pymysql.connect(
-            host=self.db_host,
-            port=self.db_port,
-            user=self.db_user,
-            passwd=self.db_passwd,
-            database=self.db_name)
+# def summ(c, d, *, a, b):
+#     return a + b
+#
+# y = [10, 15]
+# x = {
+#     'a': 5,
+#     'b': 10
+# }
 
-        cursor = self.connection.cursor()
-        quer = """DELETE FROM buble WHERE id > 4;"""
-        cursor.execute(quer)
-        cursor.close()
-        self.connection.commit()
+# print(summ(a=x['a'], b=x['b']))
+# print(summ(*y, **x))
 
+# a, *b, c = 10
+# print(a, b, c)
 
-    def new_quer(self):
-        self.connection = pymysql.connect(
-            host=self.db_host,
-            port=self.db_port,
-            user=self.db_user,
-            passwd=self.db_passwd,
-            database=self.db_name)
-
-        cursor = self.connection.cursor()
-        request = """SELECT age,name,mailbox,nationality FROM buble;"""
-        cursor.execute(request)
-        x = cursor.fetchall()
-        for i in x:
-            print(i)
-
-        cursor.close()
-        self.connection.commit()
+#НЕ НУЖНО СТАВИТЬ СКОБКИ ЕСЛИ ничего не наследуюем
+#ВСЕ КЛАССЫ С БОЛЬШОЙ БУКВЫ
+#СЛЕДИТЬ ЗА НАПИСАНИЕМ КОДА
 
 
-    def updater(self):
-        self.connection = pymysql.connect(
-            host=self.db_host,
-            port=self.db_port,
-            user=self.db_user,
-            passwd=self.db_passwd,
-            database=self.db_name)
-
-        cursor = self.connection.cursor()
-        request = """ALTER TABLE buble ADD data DATETIME NOT NULL;"""
-        cursor.execute(request)
-        cursor.close()
-        self.connection.commit()
+# selfedu
+#
+#
 
 
-    def new_value(self):
-        self.connection = pymysql.connect(
-            host=self.db_host,
-            port=self.db_port,
-            user=self.db_user,
-            passwd=self.db_passwd,
-            database=self.db_name)
+class Vehicle:
+    def __init__(self, x: int, y: int):
+        self.x = x
+        self.y = y
 
-        cursor = self.connection.cursor()
-        request = """SELECT *FROM buble;"""
-        cursor.execute(request)
-        all_res = cursor.fetchall()
-        x = list(all_res)
-        for i in x:
-            print(i)
-
-    def insert(self):
-        self.connection = pymysql.connect(
-            host=self.db_host,
-            port=self.db_port,
-            user=self.db_user,
-            passwd=self.db_passwd,
-            database=self.db_name)
-
-        cursor = self.connection.cursor()
-        request = """SELECT NOW();"""
-        cursor.execute(request)
-        cursor.close()
-        self.connection.commit()
+    def move(self) -> None:
+        pass
 
 
+class Car(Vehicle):
+    def __init__(self, wheels):
+        self.wheels = wheels
+        super().__init__(0, 0)
+
+    def move(self) -> None:
+        print('Машина едет')
+
+    def a(self):
+        pass
+
+# Pascal
+# C++
+# C
+# C#
+# JavaScript
+# Python
+#
 
 
-def_go = my_database(DB_NAME="means", DB_PORT=3306, DB_HOST="localhost", DB_PASSWORD="1234", DB_USER="root")
-def_go.get_connection()
-def_go.deleter()
-#def_go.updater()
-def_go.new_value()
-def_go.insert()
-#def_go.new_quer()
-#def_go.go_value()
-#def_go.go_query()
-#def_go.lets_go()
-#def_go.createtabb()
+class Truck(Car):
+    def move(self) -> None:
+        super().move()
+        print('Но это грузовик')
+
+    def b(self):
+        pass
 
 
+vehicles = [Car(), Truck()]
+
+for vehicle in vehicles:
+    vehicle.move()
+
+x = [Car(), Vehicle(), Truck()]
+
+for y in x:
+    print(y)
 
 
+x = 123
+b = 321
+n = "false"
+m = True
 
+a = [x, b, n, m]
 
+for i in a:
+    print(i)
 
-
+print(a)
